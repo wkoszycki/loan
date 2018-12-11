@@ -1,0 +1,54 @@
+# Java git ignore
+*target*
+*.jar
+*.war
+*.ear
+*.class
+
+# NetBeans specific git ignore
+*nbactions.xml
+*nb-configuration.xml
+*faces-config.NavData
+
+#soapui logs
+cbe-web/src/test/sopauilogs
+soapui*.*
+*groovy*.*
+
+# eclipse specific git ignore
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# intellij specific git ignore
+*.iml
+*.ipr
+*.iws
+*.idea/
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# vim backup files
+*~
+*.DS_Store
+node_modules
+package-lock.json
+app.js
+src/main/resources/static/data
+log
+*.log
