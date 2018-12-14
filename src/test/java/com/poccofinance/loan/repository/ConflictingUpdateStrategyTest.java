@@ -13,14 +13,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ConflictingUpdateStrategyTest extends PropertyInjectedUtil {
 
-
     private ConflictingUpdateStrategy<Loan> updateStrategy;
 
     @Before
     public void setUp() throws Exception {
         updateStrategy = new ConflictingUpdateStrategy<>(loanRepository);
     }
-
 
     @Test(expected = ResourceConflictedException.class)
     public void whenConcurrentlyUpdateSameResource_ShouldThrowException() throws Exception {

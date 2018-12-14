@@ -14,7 +14,7 @@ interface LoanController {
      * @param loanApplianceDTO object containing all necessary parameters for loan appliance.
      * @return information about issued loan.
      */
-    LoanApplianceResultDTO applyForLoan(LoanApplianceDTO loanApplianceDTO) throws InvalidInputException;
+    LoanApplianceResultDTO applyForLoan(LoanApplianceDTO loanApplianceDTO);
 
     /**
      * Updates existing resource by extending existing loan with preconfigured term.
@@ -22,5 +22,5 @@ interface LoanController {
      * @param loanExtensionDTO object containing all necessary parameters for loan extension.
      * @return information about extended loan.
      */
-    LoanExtensionResultDTO extendLoan(LoanExtensionDTO loanExtensionDTO) throws InvalidInputException;
+    LoanExtensionResultDTO extendLoan(LoanExtensionDTO loanExtensionDTO);
 }

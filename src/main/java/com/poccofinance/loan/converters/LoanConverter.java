@@ -3,10 +3,11 @@ package com.poccofinance.loan.converters;
 import com.poccofinance.loan.Loan;
 import com.poccofinance.loan.dto.LoanApplianceDTO;
 import com.poccofinance.loan.dto.LoanApplianceResultDTO;
-import com.poccofinance.loan.dto.LoanExtensionDTO;
 import com.poccofinance.loan.dto.LoanExtensionResultDTO;
-import org.springframework.stereotype.Service;
 
+/**
+ * Interface for converting entity <-> dto
+ */
 public interface LoanConverter {
 
     Loan convert(LoanApplianceDTO dto);

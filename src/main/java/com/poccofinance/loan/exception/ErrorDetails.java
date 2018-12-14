@@ -1,5 +1,6 @@
 package com.poccofinance.loan.exception;
 
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.joda.time.LocalDateTime;
 
@@ -7,8 +8,9 @@ import javax.validation.ConstraintViolation;
 import java.io.Serializable;
 import java.util.Set;
 
+@Data
 @NoArgsConstructor
-public class ErrorDetails implements Serializable {
+class ErrorDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,17 +19,14 @@ public class ErrorDetails implements Serializable {
     private String message;
     private String details;
 
-    public ErrorDetails(Set<ConstraintViolation<Serializable>> constraintViolations) {
+    ErrorDetails(Set<ConstraintViolation<Serializable>> constraintViolations) {
         this.constraintViolations = constraintViolations;
     }
 
-    public ErrorDetails(LocalDateTime timestamp, String message, String details) {
+    ErrorDetails(LocalDateTime timestamp, String message, String details) {
         this.timestamp = timestamp;
         this.message = message;
         this.details = details;
     }
 
-    public Set<ConstraintViolation<Serializable>> getConstraintViolations() {
-        return constraintViolations;
-    }
 }

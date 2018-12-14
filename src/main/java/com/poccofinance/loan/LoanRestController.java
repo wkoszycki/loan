@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.Serializable;
 
-@Slf4j
 @RestController
 public class LoanRestController implements LoanController {
 

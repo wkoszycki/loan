@@ -5,6 +5,13 @@ import org.joda.time.LocalDateTime;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.repository.CrudRepository;
 
+/**
+ * When concurrent updates occurs, this strategy will fail them by  throwing exception.
+ * In future based on resource we could implement RetryUpdateStrategy,
+ * which would try to obtain fresh data and perform update  again.
+ *
+ * @param <T> updatableResource
+ */
 public class ConflictingUpdateStrategy<T extends UpdatableResource> implements ResourceUpdateStrategy<T> {
 
     private final CrudRepository<T, Long> resourceRepository;

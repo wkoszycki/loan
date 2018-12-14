@@ -1,7 +1,6 @@
 package com.poccofinance.loan.service;
 
 import com.poccofinance.loan.Loan;
-import com.poccofinance.loan.repository.LoanRepository;
 import com.poccofinance.loan.converters.LoanConverter;
 import com.poccofinance.loan.dto.LoanApplianceDTO;
 import com.poccofinance.loan.dto.LoanApplianceResultDTO;
@@ -9,6 +8,7 @@ import com.poccofinance.loan.dto.LoanExtensionDTO;
 import com.poccofinance.loan.dto.LoanExtensionResultDTO;
 import com.poccofinance.loan.exception.InvalidInputException;
 import com.poccofinance.loan.exception.ResourceNotFoundException;
+import com.poccofinance.loan.repository.LoanRepository;
 import com.poccofinance.loan.repository.ResourceUpdateStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +21,9 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * LoanService implementation with static values configured such as: fixedExtendTermDays, fixedLoanPrincipal
+ */
 @Service
 public class StaticConfigLoanService implements LoanService{
 

@@ -1,15 +1,13 @@
 package com.poccofinance.loan.service;
 
 import com.poccofinance.loan.Loan;
-import com.poccofinance.loan.exception.ResourceConflictedException;
-import com.poccofinance.loan.exception.ResourceNotFoundException;
-import com.poccofinance.loan.repository.LoanRepository;
 import com.poccofinance.loan.PropertyInjectedUtil;
 import com.poccofinance.loan.dto.LoanApplianceDTO;
 import com.poccofinance.loan.dto.LoanApplianceResultDTO;
 import com.poccofinance.loan.dto.LoanExtensionDTO;
 import com.poccofinance.loan.dto.LoanExtensionResultDTO;
 import com.poccofinance.loan.exception.InvalidInputException;
+import com.poccofinance.loan.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;
@@ -31,14 +29,13 @@ import static org.junit.Assert.assertNotNull;
 @TestPropertySource(properties = {"com.poccofinance.loan.principal=5"})
 public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
 
-
     @Autowired
     private StaticConfigLoanService loanService;
 
 
     @Before
     public void setUp() throws Exception {
-        setFixedTime(1544604544700L);
+        setFixedTime();
     }
 
     @Test
@@ -137,8 +134,5 @@ public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
     public void whenExtendingNonExistingLoan_ShouldThrowException() throws Exception {
         loanService.extendLoan(new LoanExtensionDTO(UUID.randomUUID()));
     }
-
-
-
 
 }

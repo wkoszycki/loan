@@ -6,7 +6,9 @@ import com.poccofinance.loan.dto.LoanApplianceResultDTO;
 import com.poccofinance.loan.dto.LoanExtensionResultDTO;
 import org.joda.time.LocalDateTime;
 
-
+/**
+ * Manually implemented converter, can be swapped by later on with mapStruct or other libraries.
+ */
 public class HandMadeLoanConverter implements LoanConverter {
 
     @Override

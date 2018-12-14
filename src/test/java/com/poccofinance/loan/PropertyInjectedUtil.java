@@ -38,11 +38,21 @@ public class PropertyInjectedUtil {
     @Value("${com.poccofinance.loan.validators.correct-term-period.max-term}")
     protected Integer maxTerm;
 
-    protected LocalDateTime setFixedTime(LocalDateTime timeToSet) {
+    static public LocalDateTime setFixedTime(LocalDateTime timeToSet) {
         return setFixedTime(timeToSet.toDateTime().getMillis());
     }
 
-    protected LocalDateTime setFixedTime(long timeToSet) {
+    /**
+     * Sets fixed Time for all tests. It's necessary for tests to be repeatable,
+     * so whenever tests will run between restricted hours will always pass.
+     *
+     * @return now
+     */
+    protected LocalDateTime setFixedTime() {
+        return setFixedTime(LocalDateTime.now().withHourOfDay(maxHour).plusMinutes(1));
+    }
+
+    static private LocalDateTime setFixedTime(long timeToSet) {
         DateTimeUtils.setCurrentMillisFixed(timeToSet);
         return LocalDateTime.now();
     }

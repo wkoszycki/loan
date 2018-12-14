@@ -3,23 +3,15 @@ package com.poccofinance.loan;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poccofinance.loan.dto.LoanApplianceDTO;
 import com.poccofinance.loan.dto.LoanExtensionDTO;
-import com.poccofinance.loan.exception.ResourceConflictedException;
-import com.poccofinance.loan.service.LoanService;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -52,8 +44,7 @@ public class LoanRestControllerIT extends PropertyInjectedUtil {
 
     @Before
     public void setUp() throws Exception {
-        setFixedTime(1544604544700L);
-        MockitoAnnotations.initMocks(this);
+        setFixedTime();
     }
 
     @Test

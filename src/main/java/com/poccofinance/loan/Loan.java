@@ -8,6 +8,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * This entity is twice versioned. First - single row versioning @Version for concurrent update purposes.
+ * Second via requestedDate and loanId as business id, so we will always keep update history.
+ * Amount is kept as Long type, this would mean that for 1$ amount would be calculated in cents e.g 100.
+ * For other currencies analogous basic currency values will be kept.
+ */
 @Table(indexes = {@Index(columnList = "loanId,requestedDate", name = "LOAN_ID_IDX")})
 @Entity
 @Data

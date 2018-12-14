@@ -15,7 +15,7 @@ public class InvalidInputException extends RuntimeException{
         this.constraintViolations = constraintViolations;
     }
 
-    public Set<ConstraintViolation<Serializable>> getConstraintViolations() {
+    Set<ConstraintViolation<Serializable>> getConstraintViolations() {
         return constraintViolations;
     }
 }

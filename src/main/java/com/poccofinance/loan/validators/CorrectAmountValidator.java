@@ -22,6 +22,13 @@ public class CorrectAmountValidator implements ConstraintValidator<CorrectAmount
     @Value("${com.poccofinance.loan.validators.correct-amount.max-hour}")
     private Integer maxHour;
 
+    /**
+     * Validating function for amount.
+     *
+     * @param value   amount value
+     * @param context surrounding context
+     * @return true for non empty value and non max between restricted hours and basic ranges (min,max) satisfied.
+     */
     @Override
     public boolean isValid(Long value, ConstraintValidatorContext context) {
         return value != null && !isMaxAmountBetweenHours(value, LocalDateTime.now()) && value <= maxAmount && value >= minAmount;
