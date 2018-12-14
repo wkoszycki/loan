@@ -4,19 +4,19 @@ import com.poccofinance.loan.dto.LoanApplianceDTO;
 import com.poccofinance.loan.dto.LoanApplianceResultDTO;
 import com.poccofinance.loan.dto.LoanExtensionDTO;
 import com.poccofinance.loan.dto.LoanExtensionResultDTO;
-import com.poccofinance.loan.exception.InvalidInputException;
 import com.poccofinance.loan.service.LoanService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.io.Serializable;
 
 @RestController
-public class LoanRestController implements LoanController {
+class LoanRestController implements LoanController {
 
     private final LoanService loanService;
 
@@ -36,12 +36,12 @@ public class LoanRestController implements LoanController {
     }
 
     @Override
-    public LoanApplianceResultDTO applyForLoan(LoanApplianceDTO loanApplianceDTO) throws InvalidInputException {
+    public LoanApplianceResultDTO applyForLoan(LoanApplianceDTO loanApplianceDTO) {
         return loanService.applyForLoan(loanApplianceDTO);
     }
 
     @Override
-    public LoanExtensionResultDTO extendLoan(LoanExtensionDTO loanExtensionDTO) throws InvalidInputException {
+    public LoanExtensionResultDTO extendLoan(LoanExtensionDTO loanExtensionDTO) {
         return loanService.extendLoan(loanExtensionDTO);
     }
 }

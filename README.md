@@ -26,8 +26,11 @@ java -jar ./target/loan-<version>.jar --server.port=8080
 ```
 You can override any property as showed above  with the port
 
-TODO: specify api endpoints
-
+Following API endpoints are available:
+```
+POST /loans - create  loan resource
+PUT /loans - update  loan resource  with fixed term days
+```
 ## Running the tests
 
 Running junit tests

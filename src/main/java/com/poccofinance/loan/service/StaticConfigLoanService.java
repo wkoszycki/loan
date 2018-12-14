@@ -1,6 +1,7 @@
 package com.poccofinance.loan.service;
 
 import com.poccofinance.loan.Loan;
+import com.poccofinance.loan.TypeSafeConfig;
 import com.poccofinance.loan.converters.LoanConverter;
 import com.poccofinance.loan.dto.LoanApplianceDTO;
 import com.poccofinance.loan.dto.LoanApplianceResultDTO;
@@ -11,8 +12,6 @@ import com.poccofinance.loan.exception.ResourceNotFoundException;
 import com.poccofinance.loan.repository.LoanRepository;
 import com.poccofinance.loan.repository.ResourceUpdateStrategy;
 import org.joda.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -26,26 +25,22 @@ import java.util.UUID;
  * LoanService implementation with static values configured such as: fixedExtendTermDays, fixedLoanPrincipal
  */
 @Service
-public class StaticConfigLoanService implements LoanService{
+public class StaticConfigLoanService implements LoanService {
 
-    private final Double fixedLoanPrincipal;
-    private final Integer fixedExtendTermDays;
     private final LoanRepository loanRepository;
     private final LoanConverter loanConverter;
     private final Validator validator;
+    private final TypeSafeConfig config;
     private final ResourceUpdateStrategy<Loan> resourceUpdateStrategy;
 
-    @Autowired
     public StaticConfigLoanService(
-        @Value("${com.poccofinance.loan.principal}") Double fixedLoanPrincipal,
-        @Value("${com.poccofinance.loan.extend-term-days}") Integer fixedExtendTermDays,
         LoanRepository loanRepository,
         LoanConverter loanConverter,
         Validator validator,
+        TypeSafeConfig config,
         ResourceUpdateStrategy<Loan> resourceUpdateStrategy) {
 
-        this.fixedLoanPrincipal = fixedLoanPrincipal;
-        this.fixedExtendTermDays = fixedExtendTermDays;
+        this.config = config;
         this.loanRepository = loanRepository;
         this.loanConverter = loanConverter;
         this.validator = validator;
@@ -53,11 +48,11 @@ public class StaticConfigLoanService implements LoanService{
     }
 
     @Override
-    public LoanApplianceResultDTO applyForLoan(LoanApplianceDTO loanApplianceDTO) throws InvalidInputException {
+    public LoanApplianceResultDTO applyForLoan(LoanApplianceDTO loanApplianceDTO) {
         checkConstraints(loanApplianceDTO);
         final Loan.LoanBuilder loan = loanConverter.convert(loanApplianceDTO)
             .loanId(UUID.randomUUID())
-            .principal(fixedLoanPrincipal)
+            .principal(config.getPrincipal())
             .dueDate(LocalDateTime.now().plusDays(loanApplianceDTO.getTerm()));
 
         final Loan savedLoan = loanRepository.save(loan.build());
@@ -65,7 +60,7 @@ public class StaticConfigLoanService implements LoanService{
     }
 
     @Override
-    public LoanExtensionResultDTO extendLoan(LoanExtensionDTO loanExtensionDTO) throws InvalidInputException {
+    public LoanExtensionResultDTO extendLoan(LoanExtensionDTO loanExtensionDTO) {
         checkConstraints(loanExtensionDTO);
         final Iterator<Loan> loanIterator = loanRepository.findByLoanIdOrderByRequestedDate(loanExtensionDTO.getLoanId()).iterator();
         if (!loanIterator.hasNext()) {
@@ -73,8 +68,8 @@ public class StaticConfigLoanService implements LoanService{
         }
         final Loan latestLoan = loanIterator.next();
         final Loan.LoanBuilder loanCopy = loanConverter.shallowCopy(latestLoan)
-            .term(fixedExtendTermDays)
-            .dueDate(latestLoan.getDueDate().plusDays(fixedExtendTermDays));
+            .term(config.getExtendTermDays())
+            .dueDate(latestLoan.getDueDate().plusDays(config.getExtendTermDays()));
 
         resourceUpdateStrategy.updateResource(latestLoan);
 

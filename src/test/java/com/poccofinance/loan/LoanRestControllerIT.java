@@ -49,41 +49,41 @@ public class LoanRestControllerIT extends PropertyInjectedUtil {
 
     @Test
     public void whenAddingLoan_ShouldReturnCreated() throws Exception {
-        performRequest(new LoanApplianceDTO(minTerm, minAmount), status().isCreated());
+        performRequest(new LoanApplianceDTO(config.getLoanMinTermDays(), config.getLoanMinAmount()), status().isCreated());
     }
 
 
     @Test
     public void whenAddingLoanBetweenRestrictedHoursWithMinAmount_ShouldReturnCreated() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(LocalDateTime.now()
-            .withHourOfDay(minHour)
+            .withHourOfDay(config.getRejectStartHour())
             .plusMinutes(1)
             .toDateTime()
             .getMillis());
 
-        performRequest(new LoanApplianceDTO(minTerm, minAmount), status().isCreated());
+        performRequest(new LoanApplianceDTO(config.getLoanMinTermDays(), config.getLoanMinAmount()), status().isCreated());
     }
 
     @Test
     public void whenAddingLoanWithInvalidTerm_ShouldReturnBadRequest() throws Exception {
-        performRequest(new LoanApplianceDTO(minTerm - 1, minAmount), status().isBadRequest());
+        performRequest(new LoanApplianceDTO(config.getLoanMinTermDays() - 1, config.getLoanMinAmount()), status().isBadRequest());
     }
 
     @Test
     public void whenAddingLoanWithInvalidAmount_ShouldReturnBadRequest() throws Exception {
-        performRequest(new LoanApplianceDTO(minTerm, minAmount - 1), status().isBadRequest());
+        performRequest(new LoanApplianceDTO(config.getLoanMinTermDays(), config.getLoanMinAmount() - 1), status().isBadRequest());
     }
 
 
     @Test
     public void whenAddingLoanBetweenRestrictedHoursWithMaxAmount_ShouldReturnBadRequest() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(LocalDateTime.now()
-            .withHourOfDay(minHour)
+            .withHourOfDay(config.getRejectStartHour())
             .plusMinutes(1)
             .toDateTime()
             .getMillis());
 
-        performRequest(new LoanApplianceDTO(minTerm, maxAmount), status().isBadRequest());
+        performRequest(new LoanApplianceDTO(config.getLoanMinTermDays(), config.getLoanMaxAmount()), status().isBadRequest());
     }
 
     @Test

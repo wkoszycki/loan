@@ -1,0 +1,13 @@
+spring:
+    profiles: devl
+name: app-config
+loan:
+    environment: devl
+    principal: 10.0
+    extendTermDays: 5
+    loanMinAmount: 10000
+    loanMaxAmount: 100000
+    rejectStartHour: 0
+    rejectStopHour: 6
+    loanMinTermDays: 4
+    loanMaxTermDays: 10

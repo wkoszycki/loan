@@ -1,6 +1,7 @@
 package com.poccofinance.loan.validators;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.poccofinance.loan.TypeSafeConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -11,14 +12,11 @@ import javax.validation.ConstraintValidatorContext;
  */
 public class CorrectTermPeriodValidator implements ConstraintValidator<CorrectTermPeriod, Integer> {
 
-    @Value("${com.poccofinance.loan.validators.correct-term-period.min-term}")
-    private Integer minTerm;
-
-    @Value("${com.poccofinance.loan.validators.correct-term-period.max-term}")
-    private Integer maxTerm;
+    @Autowired
+    private TypeSafeConfig config;
 
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        return value != null && value <= maxTerm && value >= minTerm;
+        return value != null && value <= config.getLoanMaxTermDays() && value >= config.getLoanMinTermDays();
     }
 
 }
