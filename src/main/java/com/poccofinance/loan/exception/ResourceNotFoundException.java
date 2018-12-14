@@ -5,7 +5,7 @@ import lombok.ToString;
 @ToString
 public class ResourceNotFoundException extends RuntimeException {
 
-    public ResourceNotFoundException(Class clazz) {
-        super("Resource not found for type: " + clazz.getSimpleName());
+    public ResourceNotFoundException(Class clazz, String resourceId) {
+        super("Resource not found for type: " + clazz.getSimpleName() + " and id: " + resourceId);
     }
 }

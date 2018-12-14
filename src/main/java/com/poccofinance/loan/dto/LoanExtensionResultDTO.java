@@ -6,6 +6,9 @@ import org.joda.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.UUID;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class LoanExtensionResultDTO implements Serializable{
 

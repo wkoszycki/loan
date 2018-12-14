@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @ToString
-public class InvalidInputException extends Exception{
+public class InvalidInputException extends RuntimeException{
 
     private final Set<ConstraintViolation<Serializable>> constraintViolations;
 

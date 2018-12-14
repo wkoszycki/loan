@@ -3,7 +3,6 @@ package com.poccofinance.loan.converters;
 import com.poccofinance.loan.Loan;
 import com.poccofinance.loan.dto.LoanApplianceDTO;
 import com.poccofinance.loan.dto.LoanApplianceResultDTO;
-import com.poccofinance.loan.dto.LoanExtensionDTO;
 import com.poccofinance.loan.dto.LoanExtensionResultDTO;
 import org.joda.time.LocalDateTime;
 
@@ -30,12 +29,23 @@ public class HandMadeLoanConverter implements LoanConverter {
     }
 
     @Override
-    public Loan convert(LoanExtensionDTO dto) {
-        return null;
+    public Loan shallowCopy(Loan loan) {
+        final Loan loanCopy = new Loan();
+        loanCopy.setLoanId(loan.getLoanId());
+        loanCopy.setAmount(loan.getAmount());
+        loanCopy.setTerm(loan.getTerm());
+        loanCopy.setPrincipal(loan.getPrincipal());
+        loanCopy.setRequestedDate(loan.getRequestedDate());
+        loanCopy.setDueDate(loan.getDueDate());
+        return loanCopy;
     }
 
     @Override
-    public LoanExtensionResultDTO extendLoan(Loan loan) {
-        return null;
+    public LoanExtensionResultDTO convertExtendedLoan(Loan loan) {
+        return LoanExtensionResultDTO.builder()
+            .id(loan.getId())
+            .loanId(loan.getLoanId())
+            .dueDate(loan.getDueDate())
+            .build();
     }
 }

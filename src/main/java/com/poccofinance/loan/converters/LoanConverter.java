@@ -13,7 +13,7 @@ public interface LoanConverter {
 
     LoanApplianceResultDTO convert(Loan loan);
 
-    Loan convert(LoanExtensionDTO dto);
+    Loan shallowCopy(Loan loan);
 
-    LoanExtensionResultDTO extendLoan(Loan loan);
+    LoanExtensionResultDTO convertExtendedLoan(Loan loan);
 }

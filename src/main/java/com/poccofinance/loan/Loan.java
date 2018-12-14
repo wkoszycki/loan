@@ -1,17 +1,17 @@
 package com.poccofinance.loan;
 
-import lombok.*;
+import com.poccofinance.loan.repository.UpdatableResource;
+import lombok.Data;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-@Table(indexes = {@Index(columnList = "loanId", name = "LOAN_ID_IDX")})
+@Table(indexes = {@Index(columnList = "loanId,requestedDate", name = "LOAN_ID_IDX")})
 @Entity
 @Data
-public class Loan implements Serializable{
+public class Loan implements Serializable, UpdatableResource {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,5 +32,6 @@ public class Loan implements Serializable{
     private LocalDateTime requestedDate;
     @Column(nullable = false)
     private LocalDateTime dueDate;
+    private LocalDateTime lastUpdate;
 
 }

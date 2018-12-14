@@ -24,5 +24,5 @@ public interface LoanService {
      * @param loanExtensionDTO object containing all necessary parameters for loan extension.
      * @return information about extended loan.
      */
-    LoanExtensionResultDTO extendLoan(LoanExtensionDTO loanExtensionDTO);
+    LoanExtensionResultDTO extendLoan(LoanExtensionDTO loanExtensionDTO) throws InvalidInputException;
 }

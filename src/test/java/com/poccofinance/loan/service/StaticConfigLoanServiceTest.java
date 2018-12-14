@@ -1,7 +1,9 @@
 package com.poccofinance.loan.service;
 
 import com.poccofinance.loan.Loan;
-import com.poccofinance.loan.LoanRepository;
+import com.poccofinance.loan.exception.ResourceConflictedException;
+import com.poccofinance.loan.exception.ResourceNotFoundException;
+import com.poccofinance.loan.repository.LoanRepository;
 import com.poccofinance.loan.PropertyInjectedUtil;
 import com.poccofinance.loan.dto.LoanApplianceDTO;
 import com.poccofinance.loan.dto.LoanApplianceResultDTO;
@@ -11,7 +13,6 @@ import com.poccofinance.loan.exception.InvalidInputException;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,6 @@ import static org.junit.Assert.assertNotNull;
 @TestPropertySource(properties = {"com.poccofinance.loan.principal=5"})
 public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
 
-    @Autowired
-    private LoanRepository loanRepository;
 
     @Autowired
     private StaticConfigLoanService loanService;
@@ -52,7 +51,7 @@ public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
         assertEquals(dto.getTerm(), result.getTerm());
         assertNotNull("it should generate id", result.getLoanId());
 
-        final Loan loan = loanRepository.findByLoanId(result.getLoanId()).iterator().next();
+        final Loan loan = loanRepository.findByLoanIdOrderByRequestedDate(result.getLoanId()).iterator().next();
 
         assertEquals(loanPrincipal, loan.getPrincipal());
         assertEquals(LocalDateTime.now(), loan.getRequestedDate());
@@ -103,7 +102,7 @@ public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
         assertEquals(dto.getTerm(), result.getTerm());
         assertNotNull("it should generate id", result.getLoanId());
 
-        final Loan loan = loanRepository.findByLoanId(result.getLoanId()).iterator().next();
+        final Loan loan = loanRepository.findByLoanIdOrderByRequestedDate(result.getLoanId()).iterator().next();
 
         assertEquals(loanPrincipal, loan.getPrincipal());
         assertEquals(LocalDateTime.now(), loan.getRequestedDate());
@@ -112,7 +111,6 @@ public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
 
     //----------------------------------------- Loan extend  tests -----------------------------------------
 
-    @Ignore
     @Test
     public void whenExtendingLoan_ShouldUpdateExistingLoan() throws Exception {
         final Loan initialLoan = prepareSampleLoan();
@@ -129,16 +127,18 @@ public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
         assertEquals(initialLoan.getAmount(), updatedLoan.getAmount());
         assertEquals(initialLoan.getPrincipal(), updatedLoan.getPrincipal());
         assertEquals(loanExtensionTermDays, updatedLoan.getTerm());
+        //check if old record was updated
+        final Loan previousLoan = loanRepository.findById(initialLoan.getId()).get();
+        assertEquals(LocalDateTime.now(), previousLoan.getLastUpdate());
     }
 
-    private Loan prepareSampleLoan() {
-        final Loan loan = new Loan();
-        loan.setLoanId(UUID.randomUUID());
-        loan.setRequestedDate(LocalDateTime.now());
-        loan.setPrincipal(loanPrincipal);
-        loan.setAmount(minAmount);
-        return loanRepository.save(loan);
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void whenExtendingNonExistingLoan_ShouldThrowException() throws Exception {
+        loanService.extendLoan(new LoanExtensionDTO(UUID.randomUUID()));
     }
+
+
 
 
 }

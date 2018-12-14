@@ -1,11 +1,18 @@
 package com.poccofinance.loan;
 
+import com.poccofinance.loan.repository.LoanRepository;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.util.UUID;
 
 
 public class PropertyInjectedUtil {
+
+    @Autowired
+    protected LoanRepository loanRepository;
 
     @Value("${com.poccofinance.loan.principal}")
     protected Double loanPrincipal;
@@ -38,5 +45,16 @@ public class PropertyInjectedUtil {
     protected LocalDateTime setFixedTime(long timeToSet) {
         DateTimeUtils.setCurrentMillisFixed(timeToSet);
         return LocalDateTime.now();
+    }
+
+    protected Loan prepareSampleLoan() {
+        final Loan loan = new Loan();
+        loan.setLoanId(UUID.randomUUID());
+        loan.setRequestedDate(LocalDateTime.now());
+        loan.setTerm(minTerm);
+        loan.setPrincipal(loanPrincipal);
+        loan.setAmount(minAmount);
+        loan.setDueDate(loan.getRequestedDate().plusDays(loan.getTerm()));
+        return loanRepository.save(loan);
     }
 }

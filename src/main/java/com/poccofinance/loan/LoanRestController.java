@@ -1,6 +1,9 @@
 package com.poccofinance.loan;
 
-import com.poccofinance.loan.dto.*;
+import com.poccofinance.loan.dto.LoanApplianceDTO;
+import com.poccofinance.loan.dto.LoanApplianceResultDTO;
+import com.poccofinance.loan.dto.LoanExtensionDTO;
+import com.poccofinance.loan.dto.LoanExtensionResultDTO;
 import com.poccofinance.loan.exception.InvalidInputException;
 import com.poccofinance.loan.service.LoanService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,21 +29,13 @@ public class LoanRestController implements LoanController {
     @PostMapping("/loans")
     @ResponseBody
     public ResponseEntity<Serializable> create(@RequestBody @Valid LoanApplianceDTO loanApplianceDTO) {
-        try {
-            return new ResponseEntity<>(applyForLoan(loanApplianceDTO), HttpStatus.CREATED);
-        } catch (InvalidInputException e) {
-            return new ResponseEntity<>(new ApiErrorDTO(e.getConstraintViolations()), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(applyForLoan(loanApplianceDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/loans")
     @ResponseBody
     public ResponseEntity<Serializable> update(@RequestBody @Valid LoanExtensionDTO loanExtensionDTO) {
-        try {
-            return new ResponseEntity<>(extendLoan(loanExtensionDTO), HttpStatus.OK);
-        } catch (InvalidInputException e) {
-            return new ResponseEntity<>(new ApiErrorDTO(e.getConstraintViolations()), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(extendLoan(loanExtensionDTO), HttpStatus.OK);
     }
 
     @Override
