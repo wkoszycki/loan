@@ -58,13 +58,14 @@ public class PropertyInjectedUtil {
     }
 
     protected Loan prepareSampleLoan() {
-        final Loan loan = new Loan();
-        loan.setLoanId(UUID.randomUUID());
-        loan.setRequestedDate(LocalDateTime.now());
-        loan.setTerm(minTerm);
-        loan.setPrincipal(loanPrincipal);
-        loan.setAmount(minAmount);
-        loan.setDueDate(loan.getRequestedDate().plusDays(loan.getTerm()));
+        final Loan loan = Loan.builder()
+            .loanId(UUID.randomUUID())
+            .requestedDate(LocalDateTime.now())
+            .term(minTerm)
+            .principal(loanPrincipal)
+            .amount(minAmount)
+            .dueDate(LocalDateTime.now().plusDays(minTerm))
+            .build();
         return loanRepository.save(loan);
     }
 }

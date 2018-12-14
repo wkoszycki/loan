@@ -10,6 +10,7 @@ import com.poccofinance.loan.exception.InvalidInputException;
 import com.poccofinance.loan.exception.ResourceNotFoundException;
 import com.poccofinance.loan.repository.LoanRepository;
 import com.poccofinance.loan.repository.ResourceUpdateStrategy;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,6 @@ import java.util.UUID;
  */
 @Service
 public class StaticConfigLoanService implements LoanService{
-
 
     private final Double fixedLoanPrincipal;
     private final Integer fixedExtendTermDays;
@@ -55,12 +55,13 @@ public class StaticConfigLoanService implements LoanService{
     @Override
     public LoanApplianceResultDTO applyForLoan(LoanApplianceDTO loanApplianceDTO) throws InvalidInputException {
         checkConstraints(loanApplianceDTO);
-        final Loan loan = loanConverter.convert(loanApplianceDTO);
-        loan.setLoanId(UUID.randomUUID());
-        loan.setPrincipal(fixedLoanPrincipal);
-        loan.setDueDate(loan.getRequestedDate().plusDays(loan.getTerm()));
-        final Loan savedLoan = loanRepository.save(loan);
-        return loanConverter.convert(savedLoan);
+        final Loan.LoanBuilder loan = loanConverter.convert(loanApplianceDTO)
+            .loanId(UUID.randomUUID())
+            .principal(fixedLoanPrincipal)
+            .dueDate(LocalDateTime.now().plusDays(loanApplianceDTO.getTerm()));
+
+        final Loan savedLoan = loanRepository.save(loan.build());
+        return loanConverter.convertLoan(savedLoan);
     }
 
     @Override
@@ -71,13 +72,13 @@ public class StaticConfigLoanService implements LoanService{
             throw new ResourceNotFoundException(Loan.class, loanExtensionDTO.getLoanId().toString());
         }
         final Loan latestLoan = loanIterator.next();
-        final Loan loanCopy = loanConverter.shallowCopy(latestLoan);
+        final Loan.LoanBuilder loanCopy = loanConverter.shallowCopy(latestLoan)
+            .term(fixedExtendTermDays)
+            .dueDate(latestLoan.getDueDate().plusDays(fixedExtendTermDays));
 
         resourceUpdateStrategy.updateResource(latestLoan);
 
-        loanCopy.setTerm(fixedExtendTermDays);
-        loanCopy.setDueDate(latestLoan.getDueDate().plusDays(fixedExtendTermDays));
-        final Loan extendedLoan = loanRepository.save(loanCopy);
+        final Loan extendedLoan = loanRepository.save(loanCopy.build());
         return loanConverter.convertExtendedLoan(extendedLoan);
     }
 

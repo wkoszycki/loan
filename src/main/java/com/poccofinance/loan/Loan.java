@@ -1,7 +1,7 @@
 package com.poccofinance.loan;
 
 import com.poccofinance.loan.repository.UpdatableResource;
-import lombok.Data;
+import lombok.*;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -14,9 +14,13 @@ import java.util.UUID;
  * Amount is kept as Long type, this would mean that for 1$ amount would be calculated in cents e.g 100.
  * For other currencies analogous basic currency values will be kept.
  */
+@Builder
 @Table(indexes = {@Index(columnList = "loanId,requestedDate", name = "LOAN_ID_IDX")})
 @Entity
-@Data
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"id","loanId"})
 public class Loan implements Serializable, UpdatableResource {
 
     private static final long serialVersionUID = 1L;
@@ -40,4 +44,8 @@ public class Loan implements Serializable, UpdatableResource {
     private LocalDateTime dueDate;
     private LocalDateTime lastUpdate;
 
+    @Override
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
 }

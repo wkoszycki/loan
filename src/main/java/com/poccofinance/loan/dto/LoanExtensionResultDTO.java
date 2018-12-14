@@ -9,8 +9,10 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class LoanExtensionResultDTO implements Serializable{
+@ToString
+@Getter
+@EqualsAndHashCode
+public class LoanExtensionResultDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -10,11 +10,11 @@ import com.poccofinance.loan.dto.LoanExtensionResultDTO;
  */
 public interface LoanConverter {
 
-    Loan convert(LoanApplianceDTO dto);
+    Loan.LoanBuilder convert(LoanApplianceDTO dto);
 
-    LoanApplianceResultDTO convert(Loan loan);
+    LoanApplianceResultDTO convertLoan(Loan loan);
 
-    Loan shallowCopy(Loan loan);
+    Loan.LoanBuilder shallowCopy(Loan loan);
 
     LoanExtensionResultDTO convertExtendedLoan(Loan loan);
 }

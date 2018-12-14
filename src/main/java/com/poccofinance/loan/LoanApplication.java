@@ -39,7 +39,6 @@ public class LoanApplication {
         log.info("Loan app successfully started");
     }
 
-
     @Bean
     LoanConverter createLoanConverter() {
         return new HandMadeLoanConverter();

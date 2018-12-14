@@ -40,5 +40,4 @@ public class CorrectAmountValidator implements ConstraintValidator<CorrectAmount
             && now.isBefore(now.withHourOfDay(maxHour).withMinuteOfHour(0));
     }
 
-
 }

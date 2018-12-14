@@ -8,8 +8,10 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class LoanExtensionDTO implements Serializable{
+@ToString
+@Getter
+@EqualsAndHashCode
+public class LoanExtensionDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

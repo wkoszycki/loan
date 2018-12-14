@@ -1,14 +1,16 @@
 package com.poccofinance.loan.exception;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.joda.time.LocalDateTime;
 
 import javax.validation.ConstraintViolation;
 import java.io.Serializable;
 import java.util.Set;
 
-@Data
+@ToString
+@Getter
 @NoArgsConstructor
 class ErrorDetails implements Serializable {
 

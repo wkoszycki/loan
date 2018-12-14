@@ -26,14 +26,12 @@ public class LoanRestController implements LoanController {
     }
 
     @PostMapping("/loans")
-    @ResponseBody
-    public ResponseEntity<Serializable> create(@RequestBody @Valid LoanApplianceDTO loanApplianceDTO) {
+    public ResponseEntity<LoanApplianceResultDTO> create(@RequestBody @Valid LoanApplianceDTO loanApplianceDTO) {
         return new ResponseEntity<>(applyForLoan(loanApplianceDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/loans")
-    @ResponseBody
-    public ResponseEntity<Serializable> update(@RequestBody @Valid LoanExtensionDTO loanExtensionDTO) {
+    public ResponseEntity<LoanExtensionResultDTO> update(@RequestBody @Valid LoanExtensionDTO loanExtensionDTO) {
         return new ResponseEntity<>(extendLoan(loanExtensionDTO), HttpStatus.OK);
     }
 
