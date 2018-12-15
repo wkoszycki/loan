@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
@@ -62,13 +61,12 @@ public class StaticConfigLoanService implements LoanService {
     @Override
     public LoanExtensionResultDTO extendLoan(LoanExtensionDTO loanExtensionDTO) {
         checkConstraints(loanExtensionDTO);
-        final Iterator<Loan> loanIterator = loanRepository.findByLoanIdOrderByRequestedDate(loanExtensionDTO.getLoanId()).iterator();
-        if (!loanIterator.hasNext()) {
-            throw new ResourceNotFoundException(Loan.class, loanExtensionDTO.getLoanId().toString());
-        }
-        final Loan latestLoan = loanIterator.next();
+        final Loan latestLoan = loanRepository.findFirstByLoanIdOrderByRequestedDateDesc(loanExtensionDTO.getLoanId())
+            .orElseThrow(() -> new ResourceNotFoundException(Loan.class, loanExtensionDTO.getLoanId().toString()));
+
         final Loan.LoanBuilder loanCopy = loanConverter.shallowCopy(latestLoan)
             .term(config.getExtendTermDays())
+            .requestedDate(LocalDateTime.now())
             .dueDate(latestLoan.getDueDate().plusDays(config.getExtendTermDays()));
 
         resourceUpdateStrategy.updateResource(latestLoan);

@@ -17,11 +17,8 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ValidationException;
-import java.security.InvalidAlgorithmParameterException;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -52,7 +49,7 @@ public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
         assertEquals(dto.getTerm(), result.getTerm());
         assertNotNull("it should generate id", result.getLoanId());
 
-        final Loan loan = loanRepository.findByLoanIdOrderByRequestedDate(result.getLoanId()).iterator().next();
+        final Loan loan = loanRepository.findFirstByLoanIdOrderByRequestedDateDesc(result.getLoanId()).get();
 
         assertEquals(config.getPrincipal(), loan.getPrincipal());
         assertEquals(LocalDateTime.now(), loan.getRequestedDate());
@@ -103,7 +100,7 @@ public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
         assertEquals(dto.getTerm(), result.getTerm());
         assertNotNull("it should generate id", result.getLoanId());
 
-        final Loan loan = loanRepository.findByLoanIdOrderByRequestedDate(result.getLoanId()).iterator().next();
+        final Loan loan = loanRepository.findFirstByLoanIdOrderByRequestedDateDesc(result.getLoanId()).get();
 
         assertEquals(config.getPrincipal(), loan.getPrincipal());
         assertEquals(LocalDateTime.now(), loan.getRequestedDate());
