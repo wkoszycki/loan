@@ -41,7 +41,7 @@ mvn test
 Running integration tests
 
 ```
-mvn -Dtest=\*IT test
+mvn integration-test
 ```
 ## Coding style
 

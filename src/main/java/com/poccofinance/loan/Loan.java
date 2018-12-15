@@ -15,7 +15,7 @@ import java.util.UUID;
  * For other currencies analogous basic currency values will be kept.
  */
 @Builder
-@Table(indexes = {@Index(columnList = "loanId,requestedDate", name = "LOAN_ID_IDX")})
+@Table(indexes = {@Index(columnList = "loanId,requestedDate", name = "LOAN_ID_REQUESTED_IDX", unique = true)})
 @Entity
 @Getter
 @AllArgsConstructor

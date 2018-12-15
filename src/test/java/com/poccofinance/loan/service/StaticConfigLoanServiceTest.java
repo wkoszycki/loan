@@ -112,13 +112,17 @@ public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
     @Test
     public void whenExtendingLoan_ShouldUpdateExistingLoan() throws Exception {
         final Loan initialLoan = prepareSampleLoan();
-        final LoanExtensionResultDTO result = loanService.extendLoan(new LoanExtensionDTO(initialLoan.getLoanId()));
 
-        assertEquals(initialLoan.getLoanId(), result.getLoanId());
+        //prevent unique index fail
+        setFixedTime(LocalDateTime.now().plusSeconds(1));
+
+        final LoanExtensionResultDTO firstExtension = loanService.extendLoan(new LoanExtensionDTO(initialLoan.getLoanId()));
+
+        assertEquals(initialLoan.getLoanId(), firstExtension.getLoanId());
         final LocalDateTime expectedDueDate = initialLoan.getDueDate().plusDays(config.getExtendTermDays());
-        assertEquals(expectedDueDate, result.getDueDate());
+        assertEquals(expectedDueDate, firstExtension.getDueDate());
 
-        final Loan updatedLoan = loanRepository.findById(result.getId()).get();
+        final Loan updatedLoan = loanRepository.findById(firstExtension.getId()).get();
         assertEquals(initialLoan.getLoanId(), updatedLoan.getLoanId());
         assertEquals(expectedDueDate, updatedLoan.getDueDate());
         assertEquals(LocalDateTime.now(), updatedLoan.getRequestedDate());
@@ -128,6 +132,11 @@ public class StaticConfigLoanServiceTest extends PropertyInjectedUtil {
         //check if old record was updated
         final Loan previousLoan = loanRepository.findById(initialLoan.getId()).get();
         assertEquals(LocalDateTime.now(), previousLoan.getLastUpdate());
+        //prevent unique index fail
+        setFixedTime(LocalDateTime.now().plusSeconds(1));
+
+        final LoanExtensionResultDTO secondExtension = loanService.extendLoan(new LoanExtensionDTO(initialLoan.getLoanId()));
+        assertEquals(expectedDueDate.plusDays(config.getExtendTermDays()), secondExtension.getDueDate());
     }
 
     @Test(expected = ResourceNotFoundException.class)
