@@ -1,20 +1,27 @@
 package com.poccofinance.loan.exception;
 
 import org.joda.time.LocalDateTime;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Object response = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(InvalidInputException.class)
     public final ResponseEntity<ErrorDetails> handleInvalidUserInput(InvalidInputException ex, WebRequest request) {
-        return new ResponseEntity<>(new ErrorDetails(ex.getConstraintViolations()), HttpStatus.BAD_REQUEST);
+        return handleAllExceptions(ex, request, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceConflictedException.class)

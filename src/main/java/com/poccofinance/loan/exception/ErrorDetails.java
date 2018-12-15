@@ -16,14 +16,9 @@ class ErrorDetails implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Set<ConstraintViolation<Serializable>> constraintViolations;
     private LocalDateTime timestamp;
     private String message;
     private String details;
-
-    ErrorDetails(Set<ConstraintViolation<Serializable>> constraintViolations) {
-        this.constraintViolations = constraintViolations;
-    }
 
     ErrorDetails(LocalDateTime timestamp, String message, String details) {
         this.timestamp = timestamp;

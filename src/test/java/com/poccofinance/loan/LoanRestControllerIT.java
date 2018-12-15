@@ -52,7 +52,6 @@ public class LoanRestControllerIT extends PropertyInjectedUtil {
         performRequest(new LoanApplianceDTO(config.getLoanMinTermDays(), config.getLoanMinAmount()), status().isCreated());
     }
 
-
     @Test
     public void whenAddingLoanBetweenRestrictedHoursWithMinAmount_ShouldReturnCreated() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(LocalDateTime.now()
@@ -74,7 +73,6 @@ public class LoanRestControllerIT extends PropertyInjectedUtil {
         performRequest(new LoanApplianceDTO(config.getLoanMinTermDays(), config.getLoanMinAmount() - 1), status().isBadRequest());
     }
 
-
     @Test
     public void whenAddingLoanBetweenRestrictedHoursWithMaxAmount_ShouldReturnBadRequest() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(LocalDateTime.now()
@@ -94,6 +92,8 @@ public class LoanRestControllerIT extends PropertyInjectedUtil {
     @Test
     public void whenExtendingExistingLoan_ShouldReturnOk() throws Exception {
         final Loan loan = prepareSampleLoan();
+        //prevent unique index fail
+        setFixedTime(LocalDateTime.now().plusSeconds(1));
         performRequest(new LoanExtensionDTO(loan.getLoanId()), put("/loans"), status().isOk());
     }
 
