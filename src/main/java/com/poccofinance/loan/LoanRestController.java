@@ -5,6 +5,7 @@ import com.poccofinance.loan.dto.LoanApplianceResultDTO;
 import com.poccofinance.loan.dto.LoanExtensionDTO;
 import com.poccofinance.loan.dto.LoanExtensionResultDTO;
 import com.poccofinance.loan.service.LoanService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Slf4j
 @RestController
 class LoanRestController implements LoanController {
 
@@ -27,11 +29,13 @@ class LoanRestController implements LoanController {
 
     @PostMapping("/loans")
     public ResponseEntity<LoanApplianceResultDTO> create(@RequestBody @Valid LoanApplianceDTO loanApplianceDTO) {
+        log.info("applying  for loan", loanApplianceDTO);
         return new ResponseEntity<>(applyForLoan(loanApplianceDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/loans")
     public ResponseEntity<LoanExtensionResultDTO> update(@RequestBody @Valid LoanExtensionDTO loanExtensionDTO) {
+        log.info("extending loan", loanExtensionDTO);
         return new ResponseEntity<>(extendLoan(loanExtensionDTO), HttpStatus.OK);
     }
 

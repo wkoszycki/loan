@@ -11,3 +11,6 @@ loan:
     rejectStopHour: 6
     loanMinTermDays: 4
     loanMaxTermDays: 10
+mdc-filter:
+    correlationHeaderName: correlation-id-header
+    mdcTokenKey: correlationId
